@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+	<node pkg="ros_object_detector" type="detector_node.py" name="detector_node">
+		<rosparam command="load" file="$(find ros_object_detector)/config/default.yaml" />
+	</node>
+</launch> 

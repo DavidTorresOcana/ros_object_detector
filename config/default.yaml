@@ -1,0 +1,12 @@
+tf_model:
+    # model's checkpoint .pb file path relative to /include/ros_potholes_detector
+    pb_path: /pothole_detector/pothole-graph/ssd-inception-30000-27-03-18/frozen_inference_graph.pb
+    #pb_path: /pothole_detector/pothole-graph/ssd-mobilenet-25000-07-03-18/frozen_inference_graph.pb
+    # labels' .pbtxt file path relative to /include/ros_potholes_detector
+    labels_definition: /pothole_detector/object-detection.pbtxt
+    # Number of objects: Number of objects defined in $labels_definition
+    num_objects: 1
+# Camera topic input to the model: ROS image topic of message type sensor_msgs.msg/Image
+camera_topic: /cv_camera/image_raw
+# Output image topic name:
+out_img_topic: /image_object_detect
