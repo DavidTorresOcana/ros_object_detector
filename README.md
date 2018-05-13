@@ -1,5 +1,5 @@
 # ROS Tensorflow objects detector
-A ROS package to run any Tensorflow model for object detection using a camera video feed.
+A ROS package to run any Tensorflow model for object detection or image segmentation using a camera video feed.
 
 Tested on a Drive PX2 running a [SSD-Mobilenet](https://github.com/tensorflow/models/tree/master/research/object_detection) at 19FPS. It takes about **3mins** to open a session, so **be patient** when running this node.
 
