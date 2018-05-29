@@ -59,23 +59,23 @@ class ros_tensorflow_obj():
 		# # Model preparation 
 		# ## Variables
 		# What model to grun
-		MODEL_NAME = os.path.dirname(os.path.realpath(__file__))+'/../include/ros_potholes_detector/pothole_detector/pothole-graph/ssd-mobilenet-25000-07-03-18'
+		MODEL_NAME = os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/pothole_detector/pothole-graph/ssd-mobilenet-25000-07-03-18'
 		
 		# Path to frozen detection graph. This is the actual model that is used for the object detection.
 		PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 		
 		# Get other path to frozen detection graph if specified
 		try:
-			PATH_TO_CKPT = os.path.dirname(os.path.realpath(__file__))+'/../include/ros_potholes_detector/' + rospy.get_param(rospy.get_name()+'/tf_model/pb_path')
+			PATH_TO_CKPT = os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/' + rospy.get_param(rospy.get_name()+'/tf_model/pb_path')
 		except:
 			rospy.logwarn(' ROS was unable to load parameter '+ rospy.resolve_name(rospy.get_name()+'/tf_model/pb_path'))
 		
 		# List of the strings that is used to add correct label for each box.
-		PATH_TO_LABELS = os.path.join(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_potholes_detector/pothole_detector/', 'object-detection.pbtxt')
+		PATH_TO_LABELS = os.path.join(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/pothole_detector/', 'object-detection.pbtxt')
 		
 		# Get other label definition if specified
 		try:
-			PATH_TO_LABELS =  os.path.dirname(os.path.realpath(__file__))+'/../include/ros_potholes_detector/' + rospy.get_param(rospy.get_name()+'/tf_model/labels_definition')
+			PATH_TO_LABELS =  os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/' + rospy.get_param(rospy.get_name()+'/tf_model/labels_definition')
 		except:
 			rospy.logwarn(' ROS was unable to load parameter '+ rospy.resolve_name(rospy.get_name()+'/tf_model/labels_definition'))
 			
