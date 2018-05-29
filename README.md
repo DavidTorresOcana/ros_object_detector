@@ -35,8 +35,8 @@ Models' files:
 * Labels definition: .pbtxt fiel defining objects being detected. Must be placed in `/include/ros_potholes_detector/name-of-your-model/object-detection.pbtxt`
 
 ### Parameters
-* ~tf_model/pb_path (string: default "/pothole_detector/pothole-graph/ssd-inception-30000-27-03-18/frozen_inference_graph.pb")  model's checkpoint .pb file path relative to /include/ros_potholes_detector
-* ~tf_model/labels_definition (string: default "/pothole_detector/object-detection.pbtxt")  labels' .pbtxt file path relative to /include/ros_potholes_detector
+* ~tf_model/pb_path (string: default "pothole_detector/pothole-graph/ssd-inception-30000-27-03-18/frozen_inference_graph.pb")  model's checkpoint .pb file path relative to zinclude/ros_potholes_detector
+* ~tf_model/labels_definition (string: default "pothole_detector/object-detection.pbtxt")  labels' .pbtxt file path relative to /include/ros_potholes_detector
 * ~tf_model/num_objects (int: default 1) Number of objects: Number of objects defined in $labels_definition
 * ~camera_topic (string: default /cv_camera/image_raw) Subscribed camera topic input to the model: ROS image topic of message type sensor_msgs.msg/Image
 * ~out_img_topic (string: default /image_objects_detect) Output image topic name: message type sensor_msgs.msg/Image
