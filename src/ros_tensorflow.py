@@ -31,7 +31,7 @@
 # ROS node libs
 import rospy
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int16
 from multiprocessing import Queue, Pool
 from cv_bridge import CvBridge, CvBridgeError
@@ -91,8 +91,10 @@ class ros_tensorflow_obj():
         # Get classes colors
         self.colors = generate_colors(self.class_names)
         
+        # Get Tensors to evaluate
+        CameraInfo_msg = rospy.wait_for_message('/camera/camera_info',CameraInfo)
+        self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([CameraInfo_msg.height,CameraInfo_msg.width],dtype=np.float32)) 
         
-        self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, [float(i) for i in list((780.,1200.))]) 
         # # ROS environment setup
         # ##  Define subscribers
         self.subscribers_def()
@@ -151,12 +153,13 @@ class ros_tensorflow_obj():
 
         # Visualization of the results of a detection.
 #         draw_boxes(image_np, out_scores, out_boxes, out_classes, self.class_names, self.colors)
-
+        
+#         print(out_boxes.shape,out_classes.astype(np.int32),out_scores.shape)
         vis_util.visualize_boxes_and_labels_on_image_array(
             image_np,
-            np.squeeze(out_boxes),
-            np.squeeze(out_classes).astype(np.int32),
-            np.squeeze(out_scores),
+            out_boxes,
+            out_classes.astype(np.int32),
+            out_scores,
             self.category_index )
         
         # Publish the results
