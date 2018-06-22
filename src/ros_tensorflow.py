@@ -108,7 +108,7 @@ class ros_tensorflow_obj():
         
     # Define subscribers
     def subscribers_def(self):
-        subs_topic = '/camera/image_raw'
+        subs_topic = '/gmsl_camera/port_0/cam_0/image'
         try:
             subs_topic = rospy.get_param(rospy.get_name()+'/camera_topic')
         except:
