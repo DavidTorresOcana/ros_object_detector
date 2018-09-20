@@ -1,4 +1,5 @@
 *.h5
+*.hdf5
 MANIFEST
 build
 dist
@@ -34,7 +35,7 @@ __init__
 *.swp
 *.map
 .idea/
-Read the Docs
+#Read the Docs
 config.rst
 
 /.project
