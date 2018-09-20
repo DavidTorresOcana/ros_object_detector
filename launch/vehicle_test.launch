@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="ros_object_detector" type="detector_node.py" name="detector_node">
+        
+        <remap from="/gmsl_camera/port_0/cam_0/image"  to="/gmsl_camera/port_0/cam_0/image_rect"/>
+        <remap from="/image_objects_detect" to="/vehicles_detector/detections"/>
+        
+    </node>
+</launch> 

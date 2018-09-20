@@ -60,14 +60,14 @@ class ros_tensorflow_obj():
     def __init__(self):
         # ## Initial msg
         rospy.loginfo('  ## Starting ROS Tensorflow interface ##')
-        print(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolo.h5')
+
         self.sess = K.get_session()
 
         # # Model preparation 
         # ## Variables
         # load model
 
-        self.yolo_model = load_model(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolov2_py2.h5',  custom_objects={"backend": K,'tf':tf})
+        self.yolo_model = load_model(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolov2_py2.h5',  custom_objects={'backend': K,'tf':tf})
         # load classes and anchors
         self.class_names = read_classes(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/coco_classes.txt')        
       
@@ -92,8 +92,10 @@ class ros_tensorflow_obj():
         self.colors = generate_colors(self.class_names)
         
         # Get Tensors to evaluate
-        CameraInfo_msg = rospy.wait_for_message('/camera/camera_info',CameraInfo)
-        self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([CameraInfo_msg.height,CameraInfo_msg.width],dtype=np.float32)) 
+        ##CameraInfo_msg = rospy.wait_for_message('/camera/camera_info',CameraInfo)
+        ##self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([CameraInfo_msg.height,CameraInfo_msg.width],dtype=np.float32)) 
+	
+	self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([1208,1920],dtype=np.float32)) 
         
         # # ROS environment setup
         # ##  Define subscribers
