@@ -67,10 +67,11 @@ class ros_tensorflow_obj():
         # ## Variables
         # load model
 
-        self.yolo_model = load_model(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolov2_py2.h5',  custom_objects={'backend': K,'tf':tf})
+        self.yolo_model = load_model(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolov2_coco_py2.h5',  custom_objects={'backend': K,'tf':tf})
+        
         # load classes and anchors
         self.class_names = read_classes(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/coco_classes.txt')        
-      
+
         # category_index: a dict containing category dictionaries (each holding category index `id` and category name `name`) keyed by category indices.
         self.category_index = {}
         for id_,name in enumerate(self.class_names):
@@ -80,6 +81,7 @@ class ros_tensorflow_obj():
 #         self.category_index = label_map_util.create_category_index(categories)
         
         self.anchors = read_anchors(os.path.dirname(os.path.realpath(__file__))+'/../include/ros_object_detector/yolov2/yolo_anchors.txt')
+        
          # Get head of model
         self.yolo_outputs = yolo_head(self.yolo_model.output, self.anchors, len(self.class_names))
         
@@ -93,9 +95,10 @@ class ros_tensorflow_obj():
         
         # Get Tensors to evaluate
         ##CameraInfo_msg = rospy.wait_for_message('/camera/camera_info',CameraInfo)
-        ##self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([CameraInfo_msg.height,CameraInfo_msg.width],dtype=np.float32)) 
-	
-	self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([1208,1920],dtype=np.float32)) 
+        ##self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([CameraInfo_msg.height,CameraInfo_msg.width],dtype=np.float32))
+
+        ############# WE NEED TO KEEP THE ASPECT RATIO USED ON THE TRAINING DATA 720/1280 ON INPUT IMAGES
+        self.boxes, self.scores, self.classes = yolo_eval(self.yolo_outputs, np.array([503,800],dtype=np.float32)) 
         
         # # ROS environment setup
         # ##  Define subscribers
@@ -132,7 +135,7 @@ class ros_tensorflow_obj():
 #         now = rospy.get_rostime()
         
         # Get image as np
-        image_np = self._cv_bridge.imgmsg_to_cv2(image_msg, "bgr8")
+        image_np = self._cv_bridge.imgmsg_to_cv2(image_msg, "rgb8")
         
 #         # Get Tensors to evaluate, only on 1st frame
 #         try:
@@ -146,6 +149,8 @@ class ros_tensorflow_obj():
 
          # Preprocess your image
         image_data = cv2.resize(image_np, dsize=tuple(self.model_image_size), interpolation=cv2.INTER_CUBIC).astype(np.float32)
+        ############# WE NEED TO KEEP THE ASPECT RATIO USED ON THE TRAINING DATA 720/1280 ON INPUT IMAGES
+
 #         image_data2 = np.array(image_data, dtype='float32')
         image_data /= 255.
         image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
@@ -166,7 +171,7 @@ class ros_tensorflow_obj():
         
         # Publish the results
         try:
-            self._img_publisher.publish(self._cv_bridge.cv2_to_imgmsg(image_np, "bgr8"))
+            self._img_publisher.publish(self._cv_bridge.cv2_to_imgmsg(image_np, "rgb8"))
             rospy.loginfo("  Publishing inference at %s FPS", 1.0/float(rospy.Time.now().to_sec() - self.now.to_sec()))
             self.now =rospy.Time.now()
         except CvBridgeError as e:

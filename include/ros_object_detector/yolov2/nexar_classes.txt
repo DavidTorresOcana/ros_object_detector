@@ -1,0 +1,5 @@
+car
+bus
+pickup_truck
+truck
+van
