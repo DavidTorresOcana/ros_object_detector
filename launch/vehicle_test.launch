@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 <launch>
 
-    <node pkg="ros_object_detector" type="detector_node.py" name="detector_node">
-        
-        <remap from="/gmsl_camera/port_0/cam_0/image"  to="/gmsl_camera/port_0/cam_0/image_rect"/>
+    <node pkg="ros_object_detector" type="detector_node.py" name="detector_node"  output="screen">
+        <param name="model_path_name" value="include/ros_object_detector/yolov2/yolov2_nexar_py2.h5" /> # Relative to ros_object_detector/ 
+         <!-- <param name="model_path_name" value="include/ros_object_detector/yolov2/wide_yolov2_nexar_py2.h5" /> # Relative to ros_object_detector/ -->
+         
+        <param name="classes" value="include/ros_object_detector/yolov2/nexar_classes.txt" /> # Relative to ros_object_detector/
+        <param name="anchors" value="include/ros_object_detector/yolov2/yolo_wide_nexar_anchors.txt" /> # Relative to ros_object_detector/
+
+		<param name="change_AR" type="bool" value="true" /> # to change the AR of the input image or not
+        <param name="AR" type="double" value="0.5625" /> # if change_AR is true, then crop bottom of input image to achieve this AR (Aspec Ratio) to feed to to the network. Read Yolov2_models_readme.txt . NEXAR  dataset AR is 720./1280.= .05625
+
+
+        <remap from="/camera/image"  to="/gmsl_camera/port_0/cam_0/image_rect"/>
+        <remap from="/camera/camera_info"  to="/gmsl_camera/port_0/cam_0/camera_info"/>
         <remap from="/image_objects_detect" to="/vehicles_detector/detections"/>
         
     </node>

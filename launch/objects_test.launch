@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="ros_object_detector" type="detector_node.py" name="detector_node"  output="screen">
+        <param name="model_path_name" value="include/ros_object_detector/yolov2/yolov2_coco_py2.h5" /> # Relative to ros_object_detector/
+        <param name="classes" value="include/ros_object_detector/yolov2/coco_classes.txt" /> # Relative to ros_object_detector/
+        <param name="anchors" value="include/ros_object_detector/yolov2/yolo_anchors.txt" /> # Relative to ros_object_detector/
+
+		<param name="change_AR" type="bool" value="false" /> # to change the AR of the input image or not
+        <param name="AR" type="double" value="0.62" /> # if change_AR is true, then crop bottom of input image to achieve this AR (Aspec Ratio) to feed to to the network. 
+        
+        <remap from="/camera/image"  to="/gmsl_camera/port_0/cam_0/image_rect"/>
+        <remap from="/camera/camera_info"  to="/gmsl_camera/port_0/cam_0/camera_info"/>
+        <remap from="/image_objects_detect" to="/objects_detector/detections"/>
+        
+    </node>
+</launch> 
